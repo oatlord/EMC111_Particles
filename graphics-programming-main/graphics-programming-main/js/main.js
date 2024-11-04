@@ -1,3 +1,5 @@
+// import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -42,7 +44,11 @@ function particles() {
 
 function animateParticles() {
     starGeo.verticesNeedUpdate = true;
-    stars.position.y -= 0.9;
+    if (stars.position.y < -100) {
+      stars.position.y = 100;
+    } else {
+      stars.position.y -= 0.9;
+    }
   }
 
 function cube() {
