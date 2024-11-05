@@ -47,7 +47,7 @@ function particles() {
 function animateParticles() {
     starGeo.verticesNeedUpdate = true;
     if (stars.position.y < -100) {
-      stars.position.y = 100;
+      stars.position.y = 200;
     } else {
       stars.position.y -= 0.9;
     }
