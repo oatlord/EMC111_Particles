@@ -1,4 +1,6 @@
-// import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import * as THREE from 'three';
+import { TextGeometry } from '../three/addons/geometries/TextGeometry';
+import { FontLoader } from '../three/addons/loaders/FontLoader';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -10,12 +12,12 @@ const camera = new THREE.PerspectiveCamera(
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-let cubeMesh = new THREE.Mesh();
+let textMesh = new THREE.Mesh();
 let stars, starGeo;
 
 lighting();
-cube();
 particles();
+text();
 
 function particles() {
   const points = [];
@@ -51,16 +53,23 @@ function animateParticles() {
     }
   }
 
-function cube() {
-  const texture = new THREE.TextureLoader().load("assets/textures/wooden.jpg");
-  const cubeMaterial = new THREE.MeshBasicMaterial({ map: texture });
-  const cubeGeometry = new THREE.BoxGeometry(10, 5, 5, 5);
-  cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+function text() {
+  const loader = new FontLoader();
+  
+  loader.load( 'fonts/helvetiker_regular.typeface.json', 
+    function (font) {
+      const geometry = new TextGeometry('Adrienne Marie', {
+        font: font,
+        size: 3,
+        height : 2
+    } );
+    const textMaterial = new THREE.MeshBasicMaterial({color: 0xffb6c1});
+    textMesh = new THREE.Mesh(geometry, textMaterial);
+    textMesh.position.set(-10, 0, -20);
+    scene.add(textMesh);
+  } );
 
-  cubeMesh.position.z = -5;
   camera.position.z = 15;
-
-  scene.add(cubeMesh);
 }
 
 function lighting() {
@@ -83,8 +92,8 @@ function animate() {
 
   animateParticles();
 
-  cubeMesh.rotation.x += 0.008;
-  cubeMesh.rotation.y += 0.008;
+  textMesh.rotation.x += 0.008;
+  textMesh.rotation.y += 0.008;
   renderer.render(scene, camera);
 }
 
